@@ -48,14 +48,34 @@ def clean_data(data):
     - pandas.DataFrame: Cleaned data ready for visualization.
     """
     # ChatGPT-4: Keep only the necessary columns
-    columns_to_keep = ['Request Received (Year)', 'Request Received (Quarter)',
-                       'Request Received (Month)', 'Status', 'Case Active Days (grouped)', 'Case Type']
+    # Programmer: Columns reordered in order to keep original order
+    columns_to_keep = ['Case Type',
+                       'Status',
+                       'Request Received (Year)',
+                       'Request Received (Quarter)',
+                       'Request Received (Month)',
+                       'Case Active Days (grouped)'
+
+    ]
     data = data[columns_to_keep]
 
-    # ChatGPT-4: Handle missing values as needed (e.g., fill or drop)
-    data['Status'].fillna('Unknown', inplace=True)  # Example of handling missing statuses
+   # ChatGPT-4: Fill missing values in specified columns with 'Unknown'
+    for column in columns_to_keep:
+        data[column].fillna('Unknown', inplace=True)
 
     return data
+
+def print_unique_values(data):
+    """
+    Prints unique values for each column in the DataFrame.
+
+    Parameters:
+    - data (pandas.DataFrame): The DataFrame to analyze.
+    """
+    for column in data.columns:
+        print(f"Unique values in '{column}':")
+        print(data[column].unique())
+        print("\n")  # Adds a newline for better readability between columns
 
 # ChatGPT-4: Main block to execute the functions
 def main():
@@ -71,6 +91,12 @@ def main():
 
         # ChatGPT-4: Save the cleaned data
         save_dataset(data_cleaned, cleaned_dataset_path)
+
+        print_unique_values(data_cleaned)
+    # print(data_cleaned.shape)
+    # print(data_cleaned.head(7))
+    # print(data_cleaned.info())
+    # print(data_cleaned.describe())
 
 
 if __name__ == "__main__":
